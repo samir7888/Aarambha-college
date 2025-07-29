@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Clock, Users, ArrowRight, BookOpen, DollarSign } from "lucide-react";
 import { courses } from "@/data/mockData";
 
-const CoursesPage = () => {
+const CoursesPageContent = () => {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("all");
 
@@ -229,6 +229,23 @@ const CoursesPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const CoursesPage = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading courses...</p>
+          </div>
+        </div>
+      }
+    >
+      <CoursesPageContent />
+    </Suspense>
   );
 };
 
